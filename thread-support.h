@@ -3,8 +3,10 @@
 extern elfCount;
 extern reindeerCount;
 
-extern Mutex elfMutex;
+extern Semaphore santaSleeping;
 
+extern Mutex elfMutex;
+extern Mutex reindeerMutex;
 
 void Reindeerback();
 void WaitOthers();

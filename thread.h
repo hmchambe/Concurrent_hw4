@@ -12,25 +12,28 @@ class ElfThread : public Thread
 	ElfThread(int id);
 	private:
 	void ThreadFunc();
-
+	int id;
 }
 
 class ReindeerThread : public Thread
 {
 	public:
 	//constructor
-	ReindeerThread();
+	ReindeerThread(int id);
 	private:
 	void ThreadFunc();
-
+	int id;
 }
 
 class SantaThread : public Thread
 {
 	public:
 	//constructor
-	SantaThread();
+	SantaThread(int numberOfElves, int numberOfReindeer, int numberOfToys);
 	private: 
 	void ThreadFunc();
+	int numberOfElves;
+	int numberOfReindeer;
+	int numberOfToys;
 }
 
