@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cstring>
 
-extern elfCount, reindeerCount
 
 class ElfThread : public Thread
 {
@@ -11,19 +10,20 @@ class ElfThread : public Thread
 	// constructor
 	ElfThread(int id);
 	private:
-	void ThreadFunc();
+	void ThreadFunc(int id);
 	int id;
-}
+};
 
 class ReindeerThread : public Thread
 {
 	public:
 	//constructor
-	ReindeerThread(int id);
+	ReindeerThread(int id, int numberOfReindeer);
 	private:
 	void ThreadFunc();
 	int id;
-}
+	int numberOfReindeer;
+};
 
 class SantaThread : public Thread
 {
@@ -35,5 +35,5 @@ class SantaThread : public Thread
 	int numberOfElves;
 	int numberOfReindeer;
 	int numberOfToys;
-}
+};
 

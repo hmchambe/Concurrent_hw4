@@ -1,11 +1,10 @@
 #include "thread-support.h"
-#include "ThreadClass.h"
 
-void AskQuestion()
+void AskQuestion(int id)
 {
-	elfMutex.Lock;
-	elvesWaiting++;
-	elfMutex.Unlock();
+	elfMutex->Lock();
+//	elvesWaiting++;
+	elfMutex->Unlock();
 	
 }
 
@@ -28,5 +27,13 @@ void FlyOff()
 
 void Sleep()
 {
-	santaSleeping.Wait();
+	SantaSleeping.Wait();
+}
+
+// TODO add id
+void ReindeerBack()
+{
+
+
+
 }
