@@ -1,8 +1,9 @@
+#ifndef THREAD_STUFF
+#define THREAD_STUFF
 #include <math.h>
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
-
 
 class ElfThread : public Thread
 {
@@ -10,7 +11,7 @@ class ElfThread : public Thread
 	// constructor
 	ElfThread(int id);
 	private:
-	void ThreadFunc(int id);
+	void ThreadFunc();
 	int id;
 };
 
@@ -36,4 +37,4 @@ class SantaThread : public Thread
 	int numberOfReindeer;
 	int numberOfToys;
 };
-
+#endif

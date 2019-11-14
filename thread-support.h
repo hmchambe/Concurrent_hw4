@@ -1,15 +1,17 @@
 #ifndef THREAD_SUPPORT
 #define THREAD_SUPPORT
 #include "ThreadClass.h"
-
-//int elvesWaiting = 0;
+#include <stdio.h>
+#include <string.h>
+extern int queueLength;
 //int reindeerCount;
 
-static Semaphore SantaSleeping("SantaSleeping", 1);
-static Semaphore Queue("WaitingQueue", 3);
-
-static Mutex *elfMutex;
-static Mutex *reindeerMutex;
+static Semaphore SantaSleeping("SantaSleeping", 0);
+static Semaphore Queue("WaitingQueue", 0);
+static Semaphore AnsweringQuestion("AnsweringQuestion", 0);
+static Semaphore QueueID("StoreID", 3);
+static Mutex elfMutex("reindeerMutex");
+static Mutex reindeerMutex("reindeerMutex");
 
 void ReindeerBack();
 void WaitOthers();

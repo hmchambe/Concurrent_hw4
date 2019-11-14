@@ -11,13 +11,14 @@ SantaThread::SantaThread(int elves, int reindeer, int toys)
 
 
 
-ElfThread::ElfThread(int id)// TODO add line below
+ElfThread::ElfThread(int id)
 		: id(id)
 {
+	char buf[200];
 	ThreadName.seekp(0, ios::beg);
-	ThreadName << "Elf"
-		<<  id << '\0';
-	
+	ThreadName << "Elf" <<  id << '\0';
+	sprintf(buf, "         Elf %d starts.\n", id);
+	write(1, buf, strlen(buf));	
 }
 
 ReindeerThread::ReindeerThread(int id, int numberOfReindeer)
@@ -29,11 +30,9 @@ ReindeerThread::ReindeerThread(int id, int numberOfReindeer)
 
 }
 
-void ElfThread::ThreadFunc(int id)
+void ElfThread::ThreadFunc()
 {
 	char buf[200];
-	sprintf(buf, "         Elf %d starts.\n", id);
-	write(1, buf, strlen(buf));
 
 	while(1)
 	{
@@ -43,17 +42,32 @@ void ElfThread::ThreadFunc(int id)
 	}
 }
 
+
 void SantaThread::ThreadFunc()
 {
+	int i, j;
 	char buf[200];
-	sprintf(buf, "SANTA\n");
+	sprintf(buf, "Santa thread starts\n");
 	write(1, buf, strlen(buf));
+
 	while(1)
 	{
-		Sleep();	
+		Sleep();
+		if(queueLength >= 3)
+		{
+			for(i=0; i<4; i++)
+			{
+				AnsweringQuestion.Signal();
+			}
+			Delay();
+			for(j=0; j<3; j++)
+			{
+				Queue.Signal();
+			}
+			sprintf(buf, "made it\n");
+			write(1, buf, strlen(buf));
+		}	
 	}
-
-
 
 }
 
