@@ -7,24 +7,29 @@ void AskQuestion(int id)
 
 	sprintf(buf, "         Elf %d has a problem\n", id);
 	write(1, buf, strlen(buf));
-	
-	elfMutex.Lock();
+
+	Queue.Wait();	
+	//elfMutex.Lock();
 	queueLength++;
+	//queue[index] = id;
+	//index++;
 	if(queueLength == 3)
 	{
 		SantaSleeping.Signal();
-		sprintf(buf, "         Elf %d wakes up the Santa\n", id);
-		write(1, buf, strlen(buf));
+		//sprintf(buf, "         Elf %d, %d, %d wake up the Santa\n", queue[0], queue[1], queue[2]);
+		//write(1, buf, strlen(buf));
 	}
-	elfMutex.Unlock();
-	AnsweringQuestion.Wait();
+	//elfMutex.Unlock();
+	printf("BEFORE WAIT\n");
+	Answering.Wait();
+	printf("AFTER WAIT\n");
 	sprintf(buf, "         Elf %d question answered\n", id);
 	write(1, buf, strlen(buf));
-	Queue.Wait();
-
+	Release.Wait();
 	elfMutex.Lock();
 	queueLength--;
 	elfMutex.Unlock();
+	Queue.Signal();
 }
 
 void WaitOthers()

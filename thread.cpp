@@ -55,17 +55,15 @@ void SantaThread::ThreadFunc()
 		Sleep();
 		if(queueLength >= 3)
 		{
-			for(i=0; i<4; i++)
-			{
-				AnsweringQuestion.Signal();
-			}
+			printf("SANTA\n");
+			Answering.Signal();
+			Answering.Signal();
+			Answering.Signal();
 			Delay();
-			for(j=0; j<3; j++)
-			{
-				Queue.Signal();
-			}
-			sprintf(buf, "made it\n");
-			write(1, buf, strlen(buf));
+			Release.Signal();
+			Release.Signal();
+			Release.Signal();
+			printf("SANTA END\n");
 		}	
 	}
 

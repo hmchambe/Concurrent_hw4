@@ -1,6 +1,8 @@
 #include "ThreadClass.h"
 #include "thread.h"
 int queueLength = 0;
+int queue[3];
+
 int main(int argc, char *argv[])
 {
 	int numberOfElves = atoi(argv[1]), numberOfReindeer = atoi(argv[2]), numberOfToys = atoi(argv[3]), i;

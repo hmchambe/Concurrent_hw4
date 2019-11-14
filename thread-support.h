@@ -4,12 +4,13 @@
 #include <stdio.h>
 #include <string.h>
 extern int queueLength;
+extern int queue[3];
 //int reindeerCount;
 
 static Semaphore SantaSleeping("SantaSleeping", 0);
-static Semaphore Queue("WaitingQueue", 0);
-static Semaphore AnsweringQuestion("AnsweringQuestion", 0);
-static Semaphore QueueID("StoreID", 3);
+static Semaphore Queue("WaitingQueue", 3);
+static Semaphore Answering("AnsweringQuestion", 0);
+static Semaphore Release("Release", 0);
 static Mutex elfMutex("reindeerMutex");
 static Mutex reindeerMutex("reindeerMutex");
 
