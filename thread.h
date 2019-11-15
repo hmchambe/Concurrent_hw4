@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
-
+#include "thread-support.h"
 class ElfThread : public Thread
 {
 	public:

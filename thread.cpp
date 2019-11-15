@@ -1,6 +1,5 @@
 #include "ThreadClass.h" 
 #include "thread.h"
-#include "thread-support.h" 
 
 SantaThread::SantaThread(int elves, int reindeer, int toys)
 		: numberOfElves(elves), numberOfReindeer(reindeer), numberOfToys(toys)
@@ -24,7 +23,11 @@ ElfThread::ElfThread(int id)
 ReindeerThread::ReindeerThread(int id, int numberOfReindeer)
 		: id(id), numberOfReindeer(numberOfReindeer)
 {
-
+	char buf[200];
+	ThreadName.seekp(0, ios::beg);
+	ThreadName << "Deer" << id << '\0';
+	sprintf(buf, "    Reindeer %d starts\n", id);
+	write(1, buf, strlen(buf));
 
 
 
@@ -39,33 +42,55 @@ void ElfThread::ThreadFunc()
 		Delay();
 		AskQuestion(id);
 		Delay();
+		if(killAll)
+		{
+			Exit();
+		}
 	}
 }
 
 
 void SantaThread::ThreadFunc()
 {
-	int i, j;
+	int i, j, tripsTaken = 0;
 	char buf[200];
 	sprintf(buf, "Santa thread starts\n");
 	write(1, buf, strlen(buf));
 
-	while(1)
+	while(numberOfToys)
 	{
+		int i;
 		Sleep();
-		if(queueLength >= 3)
+		if(!globalReindeer)
 		{
-			printf("SANTA\n");
-			Answering.Signal();
-			Answering.Signal();
-			Answering.Signal();
+			// Last trip
+			if(numberOfToys == 1)
+			{
+				killAll = 1;
+			}
+			// gather all reindeer
+			GatherReindeer();
+			// put on sleigh
+			PutSleigh();
+			// fly off
+			sprintf(buf, "The team flies off (%d)!\n", tripsTaken+1);
+			write(1, buf, strlen(buf));
 			Delay();
-			Release.Signal();
-			Release.Signal();
-			Release.Signal();
-			printf("SANTA END\n");
-		}	
+			//release all reindeer for vacation	
+			numberOfToys--;
+			tripsTaken++;
+		}else if(queueLength == 3)
+		{
+			sprintf(buf, "         Elf %d, %d, %d wake up Santa\n", line[0], line[1], line[2]);
+			write(1, buf, strlen(buf));
+			AnswerQuestions();
+			Delay();
+			ReleaseElves();
+		}
 	}
+	sprintf(buf, "After (%d) deliveries, Santa retires and is on vacation!\n", tripsTaken);
+	write(1, buf, strlen(buf));
+	Exit();
 
 }
 
@@ -73,8 +98,12 @@ void ReindeerThread::ThreadFunc()
 {
 	while(1)
 	{
+		if(killAll)
+		{
+			Exit();
+		}
 		Delay();	// tan on the beaches
-		ReindeerBack();	// report back to Santa
+		ReindeerBack(id);	// report back to Santa
 		WaitOthers();	// wait for others
 				// Don't forget: the last wakes up Santa 
 		WaitSleigh();	// wait for attaching sleigh
@@ -82,7 +111,4 @@ void ReindeerThread::ThreadFunc()
 				// Santa will let go all reindeer
 		Delay();	// prepare for vacation
 	}
-
-
-
 }
