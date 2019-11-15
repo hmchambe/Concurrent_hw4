@@ -1,10 +1,10 @@
 CC       = c++
-FLAGS    = -no-pie 
-CFLAGS   = -g -O2  
+FLAGS    = 
+CFLAGS   = -g -O2
 DFLAGS   = -DPACKAGE=\"threadsystem\" -DVERSION=\"1.0\" -DPTHREAD=1 -DUNIX_MSG_Q=1 -DSTDC_HEADERS=1
-IFLAGS   = -IThreadMentor/include
-TMLIB    = ThreadMentor/Visual/libthreadclass.a
-TMLIB_NV    = ThreadMentor/NoVisual/libthreadclass.a
+IFLAGS   = -I/local/eit-linux/apps/ThreadMentor/include
+TMLIB    = /local/eit-linux/apps/ThreadMentor/Visual/libthreadclass.a
+TMLIB_NV    = /local/eit-linux/apps/ThreadMentor/NoVisual/libthreadclass.a
 
 OBJ_FILE = thread.o thread-main.o thread-support.o
 EXE_FILE = prog4 

@@ -1,6 +1,27 @@
+// ----------------------------------------------------------- 
+// NAME : Hunter Chambers                    User ID: 81276171 
+// DUE DATE : 11/15/2019                                       
+// PROGRAM ASSIGNMENT 4                                        
+// FILE NAME : thread.cpp            
+// PROGRAM PURPOSE :                                           
+//    This program has a Santa, many elves, and many reindeer
+//	Santa is sleeping and can only be woken up by three elves
+//	if they have questions, or if all of the reindeer are back
+//	from the bahamas        
+// ----------------------------------------------------------- 
 #include "ThreadClass.h" 
 #include "thread.h"
 
+// ----------------------------------------------------------- 
+// FUNCTION  SantaThread         
+//     Constructor                            
+// PARAMETER USAGE :                                           
+//    elves: number of elves
+//    reindeer: number of reindeer
+//    toys: number of toys
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 SantaThread::SantaThread(int elves, int reindeer, int toys)
 		: numberOfElves(elves), numberOfReindeer(reindeer), numberOfToys(toys)
 {
@@ -9,7 +30,14 @@ SantaThread::SantaThread(int elves, int reindeer, int toys)
 }
 
 
-
+// ----------------------------------------------------------- 
+// FUNCTION  ElfThread         
+//     Constructor                            
+// PARAMETER USAGE :                                           
+//    id: elf id
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 ElfThread::ElfThread(int id)
 		: id(id)
 {
@@ -20,6 +48,15 @@ ElfThread::ElfThread(int id)
 	write(1, buf, strlen(buf));	
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  ReindeerThread         
+//     Constructor                            
+// PARAMETER USAGE :                                           
+//    id: reindeer id
+//    numberOfReindeer: number of reindeer
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 ReindeerThread::ReindeerThread(int id, int numberOfReindeer)
 		: id(id), numberOfReindeer(numberOfReindeer)
 {
@@ -33,6 +70,15 @@ ReindeerThread::ReindeerThread(int id, int numberOfReindeer)
 
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  ThreadFunc        
+//     Elfs main function                            
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    AskQuestion: elf asks a question
+//    Delay: waits for a random amount of time       
+// ----------------------------------------------------------- 
 void ElfThread::ThreadFunc()
 {
 	while(1)
@@ -48,7 +94,17 @@ void ElfThread::ThreadFunc()
 	}
 }
 
-
+// ----------------------------------------------------------- 
+// FUNCTION  ThreadFunc       
+//     Santas main function                            
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    GatherReindeer: get reindeer from waiting
+//    PutSleigh: hook up reindeer
+//    ReleaseElves: let elves go after answering questions
+//    Delay: waits for a random amount of time   
+// ----------------------------------------------------------- 
 void SantaThread::ThreadFunc()
 {
 	int i, j, tripsTaken = 0;
@@ -107,6 +163,18 @@ void SantaThread::ThreadFunc()
 
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  ThreadFunc         
+//     Reindeers main function                        
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    Delay: wait for some random amount of time
+//    ReindeerBack: get back from Bahamas
+//    WaitOthers: wait for other reindeer to be ready
+//    WaitSleigh: get sleighed up
+//    FlyOff: fly off with santa
+// ----------------------------------------------------------- 
 void ReindeerThread::ThreadFunc()
 {
 	while(1)

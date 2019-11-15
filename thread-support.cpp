@@ -1,3 +1,14 @@
+// ----------------------------------------------------------- 
+// NAME : Hunter Chambers                    User ID: 81276171 
+// DUE DATE : 11/15/2019                                       
+// PROGRAM ASSIGNMENT 4                                        
+// FILE NAME : thread-support.cpp            
+// PROGRAM PURPOSE :                                           
+//    This program has a Santa, many elves, and many reindeer
+//	Santa is sleeping and can only be woken up by three elves
+//	if they have questions, or if all of the reindeer are back
+//	from the bahamas        
+// ----------------------------------------------------------- 
 #include "thread-support.h"
 
 Semaphore SantaSleeping("SantaSleeping", 0);
@@ -12,7 +23,15 @@ Mutex elfMutex("elfMutex");
 Mutex reindeerMutex("reindeerMutex");
 	
 
-
+// ----------------------------------------------------------- 
+// FUNCTION  AskQuestion         
+//     Elves ask santa a question and if there are 3 of them
+// 	they can wake him up                      
+// PARAMETER USAGE :                                           
+//    id: elf id
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void AskQuestion(int id)
 {
 	char buf[200];
@@ -56,12 +75,27 @@ void AskQuestion(int id)
 	Queue.Signal();
 }
 
-
+// ----------------------------------------------------------- 
+// FUNCTION  Sleep        
+//     Santa sleeps                            
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void Sleep()
 {
 	SantaSleeping.Wait();
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  AnswerQuestions        
+//     Answer elves questions                   
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void AnswerQuestions()
 {
 	AnsweringQuestion.Signal();
@@ -69,6 +103,14 @@ void AnswerQuestions()
 	AnsweringQuestion.Signal();
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  Release Elves        
+//     Let elves go after answering their questions                     
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void ReleaseElves()
 {
 	Release.Signal();
@@ -76,6 +118,14 @@ void ReleaseElves()
 	Release.Signal();
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  Gather Reindeer        
+//     Prepare the sleighs                   
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void GatherReindeer()
 {
 	int i;
@@ -88,6 +138,14 @@ void GatherReindeer()
 	}
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  PutSleigh        
+//     Allow reindeer through                         
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void PutSleigh()
 {
 	int i;
@@ -97,7 +155,15 @@ void PutSleigh()
 	}
 }
 
-
+// ----------------------------------------------------------- 
+// FUNCTION  ReindeerBack        
+//     Reindeer back from Bahamas and wakes Santa if 
+//	it's the last one                         
+// PARAMETER USAGE :                                           
+//    id: reindeer id
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void ReindeerBack(int id)
 {
 	char buf[200];
@@ -114,16 +180,40 @@ void ReindeerBack(int id)
 	reindeerMutex.Unlock();	
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  WaitOthers        
+//     Wait for other reindeer                         
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void WaitOthers()
 {
 	WaitForOthers.Wait();
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  WaitSleigh        
+//     Wait for sleigh                         
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void WaitSleigh()
 {
 	SleighWaiting.Wait();
 }
 
+// ----------------------------------------------------------- 
+// FUNCTION  FlyOff        
+//     Reindeer flyOff                        
+// PARAMETER USAGE :                                           
+//    [NONE]
+// FUNCTION CALLED :                                           
+//    [NONE]        
+// ----------------------------------------------------------- 
 void FlyOff()
 {
 	// The reindeer fly off

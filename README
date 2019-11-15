@@ -1,0 +1,45 @@
+// ----------------------------------------------------------- 
+// NAME : Hunter Chambers                    User ID: 81276171 
+// DUE DATE : 11/15/2019                                       
+// PROGRAM ASSIGNMENT 4                                        
+// FILE NAME : README            
+// PROGRAM PURPOSE :                                           
+//    This program has a Santa, many elves, and many reindeer
+//	Santa is sleeping and can only be woken up by three elves
+//	if they have questions, or if all of the reindeer are back
+//	from the bahamas        
+// ----------------------------------------------------------- 
+
+
+1. I guarantee that only three elves ask a question by using a semaphore with an initial
+	value of 3, so that only three continue without getting blocked. Then I only 
+	signal that semaphore when all 3 elves have had their questions answered
+
+2. No elf will leave before the question is answered because it is blocked by AnsweringQuestion Semaphore and then by Release semaphore
+
+3. No other elves can cut in because before an elf can even see if enough have asked questions,
+	they are blocked until the other 3 have come back, using Queue.Wait()
+
+4. Santa cannot answer questions while he is sleeping because he either takes the reindeer to 
+	deliver presents, or answer elves questions and then goes back to sleep and is blocked
+	by the SantaSleeping semaphore which is initialized to 0, so he is blocked and waiting/
+	sleeping until it is signaled/woken up
+
+5. The reindeer is the last one coming back from vacation, because I count down how many reindeer
+	have come back from the Bahamas with the variable 'globalReindeer' and each time
+	a reindeer comes back, it decrements globalReindeer and checks if it is 0, if it is not
+	then the reindeer just waits. If it is 0, then it is the last reindeer and it wakes up 
+	Santa
+
+6. I make sure that Santa always handles the reindeer first because when he is signaled/woken up
+	he checks the reindeer with an if statement and then if that is false, he checks the 
+	elves in the else if statement. Therefor the reindeer are tended to first
+
+7. The reindeer are blocked by semaphores in WaitOthers, WaitSleigh, then after they flyOff they 
+	are blocked again. Santa must signal for them to go from one to the next. After the 
+	delivery is done, it is printed, and then Santa signals them using ReleaseReingdeer one 
+	last time to let them go back to the Bahamas and he goes back to sleep.  
+
+8. When Santa is getting the sleigh ready or delivering toys, the elves can signal Santa
+	but he won't see that until he goes back to sleep and the SantaSleeping Semaphore
+	doesn't block him. Also the elves will be blocked by the AnsweringQuestions semaphore
