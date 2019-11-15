@@ -5,6 +5,19 @@
 #include <iostream>
 #include <cstring>
 #include "thread-support.h"
+
+extern Semaphore SantaSleeping;
+extern Semaphore Queue;
+extern Semaphore AnsweringQuestion;
+extern Semaphore Release;
+extern Semaphore SleighWaiting;
+extern Semaphore WaitForOthers;
+extern Semaphore QueueLengthBlock;
+extern Semaphore ReleaseReindeer;
+extern Mutex elfMutex;
+extern Mutex reindeerMutex;
+
+
 class ElfThread : public Thread
 {
 	public:

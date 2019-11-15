@@ -1,6 +1,6 @@
 CC       = c++
 FLAGS    = -no-pie 
-CFLAGS   = -g -O2 
+CFLAGS   = -g -O2  
 DFLAGS   = -DPACKAGE=\"threadsystem\" -DVERSION=\"1.0\" -DPTHREAD=1 -DUNIX_MSG_Q=1 -DSTDC_HEADERS=1
 IFLAGS   = -IThreadMentor/include
 TMLIB    = ThreadMentor/Visual/libthreadclass.a
@@ -12,10 +12,10 @@ EXE_FILE = prog4
 ${EXE_FILE}: ${OBJ_FILE}
 	${CC} ${FLAGS}  -o ${EXE_FILE}  ${OBJ_FILE} ${TMLIB_NV} -lpthread
 
-thread.o: thread.cpp
+thread.o: thread.cpp thread-support.h
 	${CC} ${DFLAGS} ${IFLAGS} ${CFLAGS} -c thread.cpp
 
-thread-main.o: thread-main.cpp
+thread-main.o: thread-main.cpp thread-support.h
 	${CC} ${DFLAGS} ${IFLAGS} ${CFLAGS} -c thread-main.cpp
 
 thread-support.o: thread-support.cpp

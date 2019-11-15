@@ -35,13 +35,12 @@ ReindeerThread::ReindeerThread(int id, int numberOfReindeer)
 
 void ElfThread::ThreadFunc()
 {
-	char buf[200];
-
 	while(1)
 	{
 		Delay();
 		AskQuestion(id);
 		Delay();
+		// If santa is done, get laid off
 		if(killAll)
 		{
 			Exit();
@@ -57,17 +56,24 @@ void SantaThread::ThreadFunc()
 	sprintf(buf, "Santa thread starts\n");
 	write(1, buf, strlen(buf));
 
+	// Loops until time to retire
 	while(numberOfToys)
 	{
-		int i;
 		Sleep();
+		reindeerMutex.Lock();
+		elfMutex.Lock();
+		// If the reindeer are all back
 		if(!globalReindeer)
 		{
+			// Reset reindeer count b/c it is no longer needed for this trip
+			globalReindeer = numberOfReindeer;
+			reindeerMutex.Unlock();
 			// Last trip
 			if(numberOfToys == 1)
 			{
 				killAll = 1;
 			}
+			elfMutex.Unlock();
 			// gather all reindeer
 			GatherReindeer();
 			// put on sleigh
@@ -77,13 +83,20 @@ void SantaThread::ThreadFunc()
 			write(1, buf, strlen(buf));
 			Delay();
 			//release all reindeer for vacation	
+			for(i=0; i<numberOfReindeer; i++)
+			{
+				ReleaseReindeer.Signal();
+			}
+			// Account for trip taken
 			numberOfToys--;
 			tripsTaken++;
-		}else if(queueLength == 3)
+		}else if(queueLength == 3 && !killAll)
 		{
-			sprintf(buf, "         Elf %d, %d, %d wake up Santa\n", line[0], line[1], line[2]);
-			write(1, buf, strlen(buf));
+			reindeerMutex.Unlock();
+			elfMutex.Unlock();
 			AnswerQuestions();
+			sprintf(buf, "Santa answers the question posted by elves %d, %d, %d\n", line[0], line[1], line[2]);
+			write(1, buf, strlen(buf));
 			Delay();
 			ReleaseElves();
 		}
@@ -98,6 +111,7 @@ void ReindeerThread::ThreadFunc()
 {
 	while(1)
 	{
+		// If Santa is done, get laid off
 		if(killAll)
 		{
 			Exit();
